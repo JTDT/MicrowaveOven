@@ -1,5 +1,6 @@
 ﻿using MicrowaveOvenClasses.Interfaces;
 
+
 namespace MicrowaveOvenClasses.Boundary
 {
     public class Output : IOutput
