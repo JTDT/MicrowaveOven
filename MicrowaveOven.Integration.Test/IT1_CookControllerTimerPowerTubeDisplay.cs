@@ -2,22 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using NUnit.Framework;
 
 namespace MicrowaveOven.Integration.Test
 {
     [TestFixture]
-    class IT1_CookControllerTimerPowerTubeDisplay
+    public class IT1_CookControllerTimerPowerTubeDisplay
     {
-        private ITimer _timer;
-        private IPowerTube _powerTube;
+        private ITimer _fakeTimer;
+        private IPowerTube _fakePowerTube;
         private IDisplay _display;
-        private ICookController _uut;
+        private ICookController _cookController;
 
         private IUserInterface _fakeUserInterface;
         private IOutput _fakeOutput;
@@ -26,25 +28,47 @@ namespace MicrowaveOven.Integration.Test
         [SetUp]
         public void SetUp()
         {
-            _timer = new Timer();
-            _powerTube = new PowerTube(_fakeOutput);
-            _display = new Display(_fakeOutput);
-            _uut = new CookController(_timer, _display, _powerTube);
-
+            _fakeTimer = Substitute.For<ITimer>();
+            _fakePowerTube = Substitute.For<IPowerTube>();
+            //_display = new Display(_fakeOutput);
+            _display = Substitute.For<IDisplay>();
             _fakeUserInterface = Substitute.For<IUserInterface>();
-            _fakeOutput = Substitute.For<IOutput>();
+
+            _cookController = new CookController(_fakeTimer, _display, _fakePowerTube, _fakeUserInterface);
+
+        }
+
+        [TestCase(40, 50)]
+        [TestCase(50, 60)]
+        [TestCase(60, 70)]
+        public void StartCookController_MethodsCalled(int power, int timer)
+        {
+            //Arrange
+            _cookController.StartCooking(power,timer);
+
+            //Assert
+            _fakePowerTube.Received().TurnOn(power);
+            _fakeTimer.Received().Start(timer);
+
         }
 
         [TestCase]
-        public void StartCookController()
+        public void StopCookController_MethodsCalled()
         {
-            int time = 5;
-            int powerTube = 120;
-            _uut.StartCooking(120, 5);
+            _cookController.Stop();
 
-            Assert.That() => ;
-
+            _fakePowerTube.Received().TurnOff();
+            _fakeTimer.Received().Stop();
         }
+
+        //[TestCase(50, 10)]
+        //public void OnTimerEvent_TimeRemaining_DisplayCalled(int power, int timer)
+        //{
+        //    _cookController.StartCooking(power,timer);
+
+        //    _display.Received(1).ShowTime(Arg.Any<int>(),Arg.Any<int>());
+        //}
+
 
 
     }
