@@ -46,7 +46,7 @@ namespace Microwave.Test.Unit
         [Test]
         public void Start_TimerExpires_ShortEnough()
         {
-            ManualResetEvent pause = new ManualResetEvent(false);
+            ManualResetEvent pause = new ManualResetEvent(true); //ændret til true 
 
             uut.Expired += (sender, args) => pause.Set();
             uut.Start(2000);
