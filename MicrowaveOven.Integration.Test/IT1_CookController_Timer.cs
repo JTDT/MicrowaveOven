@@ -11,40 +11,35 @@ using NUnit.Framework;
 
 namespace MicrowaveOven.Integration.Test
 {
-    [TestFixture]
-    class IT1_CookControllerTimerPowerTubeDisplay
+    class IT1_CookController_Timer
     {
         private ITimer _timer;
-        private IPowerTube _powerTube;
-        private IDisplay _display;
+        private IPowerTube _fakePowerTube;
+        private IDisplay _fakeDisplay;
         private ICookController _uut;
 
         private IUserInterface _fakeUserInterface;
-        private IOutput _fakeOutput;
+        //private IOutput _fakeOutput;
 
 
         [SetUp]
         public void SetUp()
         {
             _timer = new Timer();
-            _powerTube = new PowerTube(_fakeOutput);
-            _display = new Display(_fakeOutput);
-            _uut = new CookController(_timer, _display, _powerTube);
-
+            _fakePowerTube = Substitute.For<IPowerTube>();
+            _fakeDisplay = Substitute.For<IDisplay>();
             _fakeUserInterface = Substitute.For<IUserInterface>();
-            _fakeOutput = Substitute.For<IOutput>();
+
+            _uut = new CookController(_timer, _fakeDisplay, _fakePowerTube, _fakeUserInterface);
+            
         }
 
         [TestCase]
-        public void StartCookController()
+        public void ()
         {
-            int time = 5;
-            int powerTube = 120;
-            _uut.StartCooking(120, 5);
-
-            //Assert.That() => ;
 
         }
+
 
 
     }
