@@ -39,7 +39,31 @@ namespace MicrowaveOven.Integration.Test
             _uut = new UserInterface(_Powerbutton, _timeButton , _startCancelButton, _door, _display,_light, _cookController);
         }
 
+        [Test]
+        public void Userinterface_DoorIsOpen_LightIsOn()
+        {
+            _door.Opened += Raise.EventWith(this, EventArgs.Empty);
+            _uut.OnDoorOpened(this,EventArgs.Empty);
+            _light.Received().TurnOn();
+            
 
+            //_uut.OnDoorClosed(e); // den skal tage et event - hvordan gør man det?
+            //Assert.That();
+            //Assert.That(_evenOddBet.WonAmount(_winField), Is.EqualTo(2 * BetAmount));
+        }
+
+        [Test]
+        public void Userinterface_DoorIsClosed_LightIsOff()
+        {
+            _door.Closed += Raise.EventWith(this, EventArgs.Empty);
+            _uut.OnDoorOpened(this, EventArgs.Empty);
+            _light.Received().TurnOff();
+
+
+            //_uut.OnDoorClosed(e); // den skal tage et event - hvordan gør man det?
+            //Assert.That();
+            //Assert.That(_evenOddBet.WonAmount(_winField), Is.EqualTo(2 * BetAmount));
+        }
 
 
     }
