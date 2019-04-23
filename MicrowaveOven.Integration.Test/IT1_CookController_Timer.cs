@@ -13,6 +13,7 @@ using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace MicrowaveOven.Integration.Test
 {
+    [TestFixture]
     class IT1_CookController_Timer
     {
         private ITimer _timer;
@@ -36,7 +37,7 @@ namespace MicrowaveOven.Integration.Test
             
         }
 
-        [TestCase(2, 1000, 0, 1)]
+        [TestCase(62, 1000, 1, 1)]
         [TestCase(4, 2000, 0, 2)]
         [TestCase(5, 3000, 0, 2)]
         public void TimerTickEvent_IsMethodCalledEverySecond_ShowTimeIsCalled(int timeSeconds, int sleepTimeMiliseconds, int showTimeMinute, int showtimeSeconds)
@@ -68,7 +69,7 @@ namespace MicrowaveOven.Integration.Test
             //_timer.Start(timeSeconds);
             Thread.Sleep(sleepTimeMiliseconds);
 
-            _fakeUserInterface.DidNotReceive().CookingIsDone();
+            _fakeUserInterface.DidNotReceive().CookingIsDone(); // OBS fejler lige nu
 
 
         }
