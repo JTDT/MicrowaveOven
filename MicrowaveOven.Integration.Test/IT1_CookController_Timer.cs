@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
+using NSubstitute.Core.Arguments;
 using NUnit.Framework;
+using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
 namespace MicrowaveOven.Integration.Test
 {
@@ -34,9 +36,40 @@ namespace MicrowaveOven.Integration.Test
             
         }
 
-        [TestCase]
-        public void ()
+        [TestCase(2, 1000, 0, 1)]
+        [TestCase(4, 2000, 0, 2)]
+        [TestCase(5, 3000, 0, 2)]
+        public void TimerTickEvent_IsMethodCalledEverySecond_ShowTimeIsCalled(int timeSeconds, int sleepTimeMiliseconds, int showTimeMinute, int showtimeSeconds)
         {
+            int power = 50;
+            
+            _uut.StartCooking(power,timeSeconds);
+
+          
+            Thread.Sleep(sleepTimeMiliseconds);
+
+            _fakeDisplay.Received(1).ShowTime(showTimeMinute, showtimeSeconds);
+
+
+        }
+
+        [TestCase(17, 9000)]
+        [TestCase(14, 2000)]
+        [TestCase(19, 8000)]
+        public void TimerExpired_IsMethodCalledAfter_ShowTimeIsCalled(int timeSeconds, int sleepTimeMiliseconds)
+        {
+            int power = 50;
+
+            _uut.StartCooking(power, timeSeconds);
+
+            //_timer.TimerTick += Raise.EventWith(new EventArgs());
+
+
+            //_timer.Start(timeSeconds);
+            Thread.Sleep(sleepTimeMiliseconds);
+
+            _fakeUserInterface.DidNotReceive().CookingIsDone();
+
 
         }
 
