@@ -16,7 +16,7 @@ namespace MicrowaveOven.Integration.Test
     [TestFixture]
     class IT2_CookController_PowerTube
     {
-        private ICookController _uut;
+        private ICookController _cookController;
         private IPowerTube _powerTube;
 
         private IUserInterface _fakeUserInterface;
@@ -33,7 +33,7 @@ namespace MicrowaveOven.Integration.Test
             _fakeTimer = Substitute.For<ITimer>();
             _fakeDisplay = Substitute.For<IDisplay>();
 
-            _uut = new CookController(_fakeTimer, _fakeDisplay, _powerTube, _fakeUserInterface);
+            _cookController = new CookController(_fakeTimer, _fakeDisplay, _powerTube, _fakeUserInterface);
         }
 
         [TestCase(50, 10)]
@@ -42,29 +42,28 @@ namespace MicrowaveOven.Integration.Test
         public void StartCookController_TurnOnCalled(int power, int timer)
         {
             //Arrange
-            _uut.StartCooking(power, timer);
+            _cookController.StartCooking(power, timer);
 
             //Assert
             _fakeOutput.Received(1).OutputLine($"PowerTube works with {power} %");
 
         }
 
-        [TestCase(110, 10)]
+        [TestCase(2000, 10)]
+        [TestCase(-1, 10)]
+        [TestCase(0, 10)]
         public void CookControllerPowerTube_PowerTubeAboveLimit_ThrowsException(int power, int timer)
         {
-            _uut.StartCooking(power, timer);
-
-            //_fakeOutput.Received(1).OutputLine($"power {power} Must be between 1 and 100 % (incl.)");
-            Assert.Throws<System.ArgumentOutOfRangeException>(() => _powerTube.TurnOn(power));
+           Assert.Throws<System.ArgumentOutOfRangeException>(() => _powerTube.TurnOn(power));
         }
 
     [TestCase]
-    public void StopCookController_TurnOffCalled()
+    public void StopCookController_TurnOffCalled_NoOutput()
     {
-        //_uut.StartCooking(50, 0);
-        _powerTube.TurnOff();
+        _cookController.Stop();
 
-        _fakeOutput.Received(1).OutputLine($"PowerTube turned off");
+        _fakeOutput.DidNotReceive().OutputLine("PowerTube turned off");
+        
     }
 }
 }
