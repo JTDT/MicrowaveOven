@@ -43,10 +43,32 @@ namespace MicrowaveOven.Integration.Test
         [TestCase(00, 01)]
         public void PressTimeButton_DisplayShowsPower(int minute, int sec)
         {
+            // Act
             _timeButton.Press();
             string expectedOutput = minute + ":" + sec;
+            
+            //Assert
             _fakeOutput.Received(1).OutputLine(Arg.Is<string>(s => s.Contains(expectedOutput)));
+            // virker ikke, da der er en fejl i timer
 
+        }
+
+        [TestCase(50)]
+        public void PressPowerButton_ShowPower(int power)
+        {
+            _powerButton.Press();
+            string exspectedOutout = "" + power;
+            _fakeOutput.Received(1).OutputLine(Arg.Is<string>(s=> s.Contains(exspectedOutout)));
+
+        }
+
+        [TestCase]
+        public void DisplayIsCleared()
+        {
+            _userInterface.CookingIsDone();
+            string exspectedOutout = "cleared";
+
+            _fakeOutput.Received(1).OutputLine(Arg.Is<string>(s=> s.Contains(exspectedOutout)));
         }
 
     
