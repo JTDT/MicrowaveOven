@@ -11,7 +11,6 @@ using NSubstitute;
 using NSubstitute.Core.Arguments;
 using Timer = MicrowaveOvenClasses.Boundary.Timer;
 
-
 namespace MicrowaveOven.Integration.Test
 {
     [TestFixture]
@@ -35,16 +34,14 @@ namespace MicrowaveOven.Integration.Test
             _uut = new CookController(_fakeTimer, _display, _powerTube);
         }
 
-       // [TestCase(1000, 1,"Display: 01:00")]
-       // [TestCase(8, 1, "Display: 00:08")]
+        // [TestCase(1000, 1,"Display: 01:00")]
+        // [TestCase(8, 1, "Display: 00:08")]
         public void OnTimerTick_CookingInProgress_RemainingTimeIsDisplayed(int time, int eventReceived, string output)
         {
             int power = 50;
-            _uut.StartCooking(power,time);
-        
+            _uut.StartCooking(power, time);
+
             _fakeOutput.Received(eventReceived).OutputLine(output);
         }
-
-
     }
 }
