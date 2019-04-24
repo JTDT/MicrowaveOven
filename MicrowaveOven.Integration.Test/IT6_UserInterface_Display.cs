@@ -41,7 +41,7 @@ namespace MicrowaveOven.Integration.Test
         }
 
         [TestCase(00, 01)]
-        public void PressTimeButton_DisplayShowsPower(int minute, int sec)
+        public void DisplayTime_PressTimeButton_TimeIsShown(int minute, int sec)
         {
             // Act
             _timeButton.Press();
@@ -54,7 +54,7 @@ namespace MicrowaveOven.Integration.Test
         }
 
         [TestCase(50)]
-        public void PressPowerButton_ShowPower(int power)
+        public void DisplayPower_PowerButtonPressed_PowerIsShown(int power)
         {
             _powerButton.Press();
             string exspectedOutout = "" + power;
@@ -63,12 +63,13 @@ namespace MicrowaveOven.Integration.Test
         }
 
         [TestCase]
-        public void DisplayIsCleared()
+        public void CookingIsDone_WhenCookingIsDone_DisplayIsCleared()
         {
+            _powerButton.Press();
+            _startCancelButton.Press();
             _userInterface.CookingIsDone();
-            string exspectedOutout = "cleared";
 
-            _fakeOutput.Received(1).OutputLine(Arg.Is<string>(s=> s.Contains(exspectedOutout)));
+            _fakeOutput.Received(1).OutputLine("Display cleared");
         }
 
     
