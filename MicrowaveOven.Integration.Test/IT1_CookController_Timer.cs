@@ -54,9 +54,9 @@ namespace MicrowaveOven.Integration.Test
 
         }
 
-        [TestCase(17, 9000)]
-        [TestCase(14, 2000)]
-        [TestCase(19, 8000)]
+        [TestCase(4, 2000)]
+        [TestCase(2, 1000)]
+        [TestCase(9, 8000)]
         public void TimerExpired_IsMethodCalledAfter_ShowTimeIsCalled(int timeSeconds, int sleepTimeMiliseconds)
         {
             int power = 50;
