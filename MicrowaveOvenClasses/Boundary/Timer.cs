@@ -44,7 +44,8 @@ namespace MicrowaveOvenClasses.Boundary
             // One tick has passed
             // Do what I should
 
-            TimeRemaining -= 1000; // hvorfor negativ fortegn
+            //TimeRemaining -= 1000; 
+            TimeRemaining -= 1; // ændret sådan at der kun tælles 1 sekund ned ad gangen
             TimerTick?.Invoke(this, EventArgs.Empty);
 
             if (TimeRemaining <= 0)
