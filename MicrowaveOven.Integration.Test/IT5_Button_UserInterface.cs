@@ -53,7 +53,7 @@ namespace MicrowaveOven.Integration.Test
         public void OnTimeEvent_IsMethodCalled_ShowTimeIsCalled(int sec, int min)
         {
             _timeButton.Press();
-            _userInterface.OnPowerPressed();
+            //_userInterface.OnPowerPressed();
             _fakeDisplay.Received(1).ShowTime(1,1);
         }
 
