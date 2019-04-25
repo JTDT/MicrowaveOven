@@ -45,7 +45,7 @@ namespace MicrowaveOven.Integration.Test
             _cookController.StartCooking(power, timer);
 
             //Assert
-            _fakeOutput.Received(1).OutputLine($"PowerTube works with {power} %");
+            _fakeOutput.Received(1).OutputLine($"PowerTube works with {power} W");
 
         }
 
@@ -54,16 +54,26 @@ namespace MicrowaveOven.Integration.Test
         [TestCase(0, 10)]
         public void CookControllerPowerTube_PowerTubeAboveLimit_ThrowsException(int power, int timer)
         {
-           Assert.Throws<System.ArgumentOutOfRangeException>(() => _powerTube.TurnOn(power));
+            Assert.Throws<System.ArgumentOutOfRangeException>(() => _powerTube.TurnOn(power));
         }
 
-    [TestCase]
-    public void StopCookController_TurnOffCalled_NoOutput()
-    {
-        _cookController.Stop();
+        [TestCase]
+        public void StopCookController_TurnOffCalled_NoOutput()
+        {
+            _cookController.StartCooking(50,50);
+            _cookController.Stop();
 
-        _fakeOutput.DidNotReceive().OutputLine("PowerTube turned off");
-        
+            _fakeOutput.Received().OutputLine(Arg.Is<string>(str=> str.Contains("off")));
+
+        }
+
+        [TestCase]
+        public void CookControllerPowerTube_TimerEventExspired_CookControllerStopped()
+        {
+            _cookController.StartCooking(50,50);
+            _fakeTimer.Expired += Raise.EventWith(this, EventArgs.Empty);
+            
+            _fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+        }
     }
-}
 }

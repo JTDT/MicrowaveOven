@@ -40,16 +40,17 @@ namespace MicrowaveOven.Integration.Test
             
         }
 
-        [TestCase(00, 01)]
+        [TestCase(01, 00)]
         public void DisplayTime_PressTimeButton_TimeIsShown(int minute, int sec)
         {
             // Act
+            _powerButton.Press();
             _timeButton.Press();
+
             string expectedOutput = minute + ":" + sec;
             
             //Assert
             _fakeOutput.Received(1).OutputLine(Arg.Is<string>(s => s.Contains(expectedOutput)));
-            // virker ikke, da der er en fejl i timer
 
         }
 
