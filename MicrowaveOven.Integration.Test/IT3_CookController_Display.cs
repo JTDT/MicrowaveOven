@@ -37,11 +37,17 @@ namespace MicrowaveOven.Integration.Test
          [TestCase(50, 1, 0, 1)]
          [TestCase(50, 2, 0, 2)]
         public void OnTimerTick_ShowTime_LogLineCalled(int power, int timer, int min, int sec)
-        {            
+        {  
+            
             _cookController.StartCooking(power, timer);
-            _display.ShowTime(min, sec);
 
-            _fakeOutput.Received(1).OutputLine($"Display shows: {min}:{sec}"); 
+            _fakeOutput.Received().OutputLine($"Display shows: {min}:{sec}");
+
+
+
+            //_fakeDisplay.Received(1).ShowTime(showTimeMinute, showtimeSeconds);
+
+            //VIRKER IKKE ENDNU 
         }
     }
 }
