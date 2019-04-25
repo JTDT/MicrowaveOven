@@ -41,7 +41,7 @@ namespace MicrowaveOven.Integration.Test
             _userInterface = new UserInterface(_powerButton,_timeButton,_startCancelButton,_fakeDoor,_fakeDisplay,_fakeLight,_fakeCookController);
         }
 
-        [Test] //kan den laves til en testcase?
+        [Test] 
         public void OnPowerEvent_IsMethodCalled_ShowPowerIsCalled()
         {
             int power = 50;
@@ -49,13 +49,16 @@ namespace MicrowaveOven.Integration.Test
             _fakeDisplay.Received(1).ShowPower(power);
         }
 
-       // [TestCase(1,1)]
-        //public void OnTimeEvent_IsMethodCalled_ShowTimeIsCalled(int sec, int min)
-        //{
-        //    _timeButton.Press();
-        //    _userInterface.OnPowerPressed();
-        //    _fakeDisplay.Received(1).ShowTime(1,1);
-        //}
+       [TestCase(00,01)]
+        public void OnTimeEvent_IsMethodCalled_ShowTimeIsCalled(int min, int sec)
+        {
+            _timeButton.Press();
+            //_userInterface.OnTimePressed();
+            _fakeDisplay.Received().ShowTime(min,sec);
+          // _fakeOutput.Received(1).OutputLine(Arg.Is<string>(s => s.Contains(expectedOutput)));
+
+          //ikke et kald 
+        }
 
         [TestCase()]
         public void StartCancelEvent_IsMethodCalled_TurnOnIsCalled()
@@ -63,8 +66,6 @@ namespace MicrowaveOven.Integration.Test
             _startCancelButton.Press();
             _fakeLight.Received(1).TurnOn();
         }
-
-        //Se IT6
 
     }
 }

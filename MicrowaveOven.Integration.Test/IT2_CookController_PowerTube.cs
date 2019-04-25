@@ -39,7 +39,7 @@ namespace MicrowaveOven.Integration.Test
         [TestCase(50, 10)]
         [TestCase(60, 20)]
         [TestCase(70, 30)]
-        public void StartCookController_TurnOnCalled(int power, int timer)
+        public void StartCookController_PowerTubeIsValid_TurnOnCalledWithPowerOutput(int power, int timer)
         {
             //Arrange
             _cookController.StartCooking(power, timer);

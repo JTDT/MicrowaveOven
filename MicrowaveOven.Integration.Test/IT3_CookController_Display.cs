@@ -30,17 +30,18 @@ namespace MicrowaveOven.Integration.Test
             _fakeTimer = Substitute.For<ITimer>();
             _fakeUserInterface = Substitute.For<IUserInterface>();
             _display = new Display(_fakeOutput);
+            _powerTube = new PowerTube(_fakeOutput);
             _cookController = new CookController(_fakeTimer, _display, _powerTube);
         }
 
-         [TestCase(1, 1,"Display: 01:00")]
-         [TestCase(8, 1, "Display: 00:08")]
-        public void OnTimerTick_CookingInProgress_RemainingTimeIsDisplayed(int timer, int eventReceived, string output)
-        {
-            int power = 50;
+         [TestCase(50, 1, 0, 1)]
+         [TestCase(50, 2, 0, 2)]
+        public void OnTimerTick_ShowTime_LogLineCalled(int power, int timer, int min, int sec)
+        {            
             _cookController.StartCooking(power, timer);
+            _display.ShowTime(min, sec);
 
-            _fakeOutput.Received(eventReceived).OutputLine(output);
+            _fakeOutput.Received(1).OutputLine($"Display shows: {min}:{sec}"); 
         }
     }
 }
