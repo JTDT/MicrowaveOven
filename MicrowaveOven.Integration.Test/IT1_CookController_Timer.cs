@@ -47,7 +47,7 @@ namespace MicrowaveOven.Integration.Test
             _cookController.StartCooking(power,timeSeconds);
 
           
-            Thread.Sleep(sleepTimeMiliseconds);
+            Thread.Sleep(sleepTimeMiliseconds+100);
 
             _fakeDisplay.Received().ShowTime(showTimeMinute, showtimeSeconds);
 
