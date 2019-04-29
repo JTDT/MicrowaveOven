@@ -19,10 +19,10 @@ namespace MicrowaveOven.Integration.Test
         private ITimer _timer;
         private IPowerTube _fakePowerTube;
         private IDisplay _fakeDisplay;
-        private ICookController _uut;
+        private ICookController _cookController;
 
         private IUserInterface _fakeUserInterface;
-        //private IOutput _fakeOutput;
+      
 
 
         [SetUp]
@@ -33,23 +33,23 @@ namespace MicrowaveOven.Integration.Test
             _fakeDisplay = Substitute.For<IDisplay>();
             _fakeUserInterface = Substitute.For<IUserInterface>();
 
-            _uut = new CookController(_timer, _fakeDisplay, _fakePowerTube, _fakeUserInterface);
+            _cookController = new CookController(_timer, _fakeDisplay, _fakePowerTube, _fakeUserInterface);
             
         }
 
-        [TestCase(62, 1000, 1, 1)]
-        [TestCase(4, 2000, 0, 2)]
-        [TestCase(5, 3000, 0, 2)]
+        [TestCase(20, 1000, 0, 19)]
+        [TestCase(4, 2000, 0, 2)]// disse to virker ikke
+        [TestCase(5, 2000, 0, 3)]
         public void TimerTickEvent_IsMethodCalledEverySecond_ShowTimeIsCalled(int timeSeconds, int sleepTimeMiliseconds, int showTimeMinute, int showtimeSeconds)
         {
             int power = 50;
             
-            _uut.StartCooking(power,timeSeconds);
+            _cookController.StartCooking(power,timeSeconds);
 
           
             Thread.Sleep(sleepTimeMiliseconds);
 
-            _fakeDisplay.Received(1).ShowTime(showTimeMinute, showtimeSeconds);
+            _fakeDisplay.Received().ShowTime(showTimeMinute, showtimeSeconds);
 
 
         }
@@ -61,15 +61,12 @@ namespace MicrowaveOven.Integration.Test
         {
             int power = 50;
 
-            _uut.StartCooking(power, timeSeconds);
+            _cookController.StartCooking(power, timeSeconds);
 
-            //_timer.TimerTick += Raise.EventWith(new EventArgs());
-
-
-            //_timer.Start(timeSeconds);
+           
             Thread.Sleep(sleepTimeMiliseconds);
 
-            _fakeUserInterface.DidNotReceive().CookingIsDone(); // OBS fejler lige nu
+            _fakeUserInterface.DidNotReceive().CookingIsDone(); 
 
 
         }

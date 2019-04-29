@@ -22,9 +22,7 @@ namespace MicrowaveOven.Integration.Test
         private ILight _fakeLight;
         private ICookController _fakeCookController;
 
-        //private IOutput _fakeOutput;
-
-        private IDoor _uut;
+       private IDoor _door;
 
         [SetUp]
         public void SetUp()
@@ -36,11 +34,9 @@ namespace MicrowaveOven.Integration.Test
             _fakeLight = Substitute.For<ILight>();
             _fakeCookController = Substitute.For<ICookController>();
 
-            //_fakeOutput = Substitute.For<IOutput>();
+            _door = new Door();
 
-            _uut = new Door();
-
-            _userInterface = new UserInterface(_fakePowerButton, _fakeTimeButton, _fakeStartCancelButton, _uut, _fakeDisplay, _fakeLight, _fakeCookController);
+            _userInterface = new UserInterface(_fakePowerButton, _fakeTimeButton, _fakeStartCancelButton, _door, _fakeDisplay, _fakeLight, _fakeCookController);
 
            
 
@@ -49,10 +45,9 @@ namespace MicrowaveOven.Integration.Test
         [Test]
         public void Open_WhenDoorOpens_OutputLightTurnsOn()
         {
-            _uut.Open();
-            _fakeLight.Received().TurnOn(); // virker ikke ?
-
-            //_fakeOutput.Received().OutputLine("Light is turned on");
+            _door.Open();
+            _fakeLight.Received().TurnOn(); 
+      
         }
 
         [Test]
@@ -60,10 +55,10 @@ namespace MicrowaveOven.Integration.Test
         {
 
             // act -> døren skal først åbnes før den kan lukkes
-            _uut.Open();
+            _door.Open();
 
             //Act and assert
-            _uut.Close();
+            _door.Close();
             _fakeLight.Received().TurnOff();
 
         }

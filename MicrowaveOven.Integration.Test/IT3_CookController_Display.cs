@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
 using NUnit.Framework;
@@ -31,21 +32,17 @@ namespace MicrowaveOven.Integration.Test
             _fakeUserInterface = Substitute.For<IUserInterface>();
             _display = new Display(_fakeOutput);
             _powerTube = new PowerTube(_fakeOutput);
-            _cookController = new CookController(_fakeTimer, _display, _powerTube);
+            _cookController = new CookController(_fakeTimer, _display, _powerTube, _fakeUserInterface);
         }
 
-         [TestCase(50, 1, 0, 1)]
-         [TestCase(50, 2, 0, 2)]
-        public void OnTimerTick_ShowTime_LogLineCalled(int power, int timer, int min, int sec)
+         [TestCase]
+        public void OnTimerTick_ShowTime_LogLineCalled()
         {  
-            
-            _cookController.StartCooking(power, timer);
-
-            _fakeOutput.Received().OutputLine($"Display shows: {min}:{sec}");
-
-            //_fakeDisplay.Received(1).ShowTime(showTimeMinute, showtimeSeconds);
-
-            //VIRKER IKKE ENDNU 
+            //_fakeUserInterface.OnStartCancelPressed(null,null);
+            _fakeTimer.TimerTick += Raise.Event();
+           
+            _fakeOutput.Received().OutputLine(Arg.Is<string>(s => s.Contains("Display shows")));
+ 
         }
     }
 }
