@@ -23,14 +23,14 @@ namespace MicrowaveOven.Integration.Test
         private IDoor _fakeDoor;
         private IDisplay _fakeDisplay;
         private ILight _fakeLight;
-        private IOutput _fakeOutput;
+      
         private ICookController _fakeCookController;
 
 
         [SetUp]
         public void SetUp()
         {
-            _fakeOutput = Substitute.For<IOutput>();
+          
             _timeButton = new Button();
             _powerButton = new Button();
             _startCancelButton = new Button();
