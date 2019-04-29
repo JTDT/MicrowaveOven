@@ -43,8 +43,6 @@ namespace MicrowaveOven.Integration.Test
 
             _fakeOutput.Received().OutputLine($"Display shows: {min}:{sec}");
 
-
-
             //_fakeDisplay.Received(1).ShowTime(showTimeMinute, showtimeSeconds);
 
             //VIRKER IKKE ENDNU 
